@@ -1,13 +1,13 @@
-package io.mykim.sampleBoot;
+package io.mykim.bc.springBoot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SpringBootProjectBcApplication {
+public class Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringBootProjectBcApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 
 }
