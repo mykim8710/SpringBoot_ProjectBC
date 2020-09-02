@@ -95,8 +95,25 @@ public class PostsApiControllerTest {
 
 		List<Posts> postsList = postsRepository.findAll();
 		assertThat(postsList.get(0).getTitle()).isEqualTo(updatedTitle);
-		assertThat(postsList.get(0).getContent()).isEqualTo(updatedContent);
+		assertThat(postsList.get(0).getContent()).isEqualTo(updatedContent);		
+	}
+	
+	@Test
+	public void Posts가_삭제된다() throws Exception {
+		// given
+		Posts savePosts = postsRepository.save(Posts.builder()
+																			.title("title")
+																			.content("content")
+																			.author("author")
+																			.build());
+		Long id = savePosts.getId();
 		
+		// when
+		postsRepository.deleteById(id);
+		
+		// then
+		List<Posts> postsList = postsRepository.findAll();
+		assertThat(postsList.size()).isEqualTo(0);
 	}
 	
 }
