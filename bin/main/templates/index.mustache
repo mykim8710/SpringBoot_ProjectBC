@@ -7,6 +7,17 @@
 	<div class="row">
 		<div class="col-md-6">
 			<a href="/posts/save" role="button" class="btn btn-primary">새글작성</a>
+			
+			{{#userName}} <!-- userName 값이 있을 때 : 로그인 후 -->
+				Logged in as : <span id="user">{{userName}}</span>
+				<a href="/logout" class="btn btn-info" role="button">LogOut</a>  <!-- /logout : 스프링 시큐리티에서 기본적으로 제공하는 로그아웃 url, 컨트롤러에서 따로 만들어줄 필요가 없음 -->
+			{{/userName}}
+			
+			{{^userName}} <!-- userName 값이 없을 때 -->
+				<a href="/oauth2/authorization/google" class="btn btn-secondary active" role="button">Google Login</a> <!-- /oauth2/authorization/google : 스프링 시큐리티에서 기본적으로 제공하는 로그인 url -->
+				<a href="/oauth2/authorization/naver" class="btn btn-success active" role="button">Naver Login</a>
+				<!-- <a href="/oauth2/authorization/kakao" class="btn btn-warning active" role="button">Kakao Login</a> -->
+			{{/userName}}
 		</div>
 	</div>
 	<br>
