@@ -8,7 +8,7 @@ import io.mykim.bc.springBoot.domain.user.Role;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@EnableWebSecurity // Spring Security 설정들을 활성화
+@EnableWebSecurity // Spring Security 설정 활성화
 
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private final CustomOAuth2UserService customOAuth2UserService;
@@ -21,8 +21,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.headers().frameOptions().disable() // h2-console 사용을 위해 disable
 				
 				.and()
-					.authorizeRequests()	// URL별 권한관리를 설정하는 옵션의 시작점, .authorizeRequests()가 선언되어야 .antMatchers()를 사용
-					.antMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**", "/css/**").permitAll()	// .antMatchers() : 권한관리 대상을 지정
+					.authorizeRequests()		// URL별 권한관리를 설정하는 옵션의 시작점, .authorizeRequests()가 선언되어야 .antMatchers()를 사용
+					.antMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**").permitAll()	// .antMatchers() : 권한관리 대상을 지정
 					.antMatchers("/api/v1/**").hasRole(Role.USER.name())	// USER권한을 가진 사람만 가능
 					.anyRequest().authenticated()	// .anyRequest() : 설정된 값 이외의 나머지 URL, .authenticated() : 나머지 URL들은 모두 인증된 사용자(로그인 유저)들에게 만 허용
 				

@@ -22,20 +22,19 @@ public class IndexController {
 		model.addAttribute("posts", postsService.findAllDesc());
 		
 		if(user != null) {
-			model.addAttribute("userName", user.getName());
-			//model.addAttribute("picture", user.getPicture());
+			model.addAttribute("loginUserName", user.getName());
 		}
 		
 		return "index";
 	}
 
-	// 게시글 입력 페이지로 이동
+	// 새 게시글 입력 페이지로 이동
 	@GetMapping("/posts/save")
 	public String postsSave() {
 		return "postsSave";
 	}
 
-	// 해당 게시글 조회 페이지
+	// 해당 게시글 조회 페이지로 이동
 	@GetMapping("/posts/select/{id}")
 	public String postsSelect(@PathVariable Long id, Model model) {
 		PostsResponseDto responseDto = postsService.findById(id);
@@ -43,7 +42,7 @@ public class IndexController {
 		return "postsView";
 	}
 
-	// 해당 게시글 수정 페이지
+	// 해당 게시글 수정 페이지로 이동
 	@GetMapping("/posts/update/{id}")
 	public String postsUpdate(@PathVariable Long id, Model model) {
 		PostsResponseDto responseDto = postsService.findById(id);

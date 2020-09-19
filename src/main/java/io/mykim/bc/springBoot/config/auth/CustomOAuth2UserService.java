@@ -1,3 +1,5 @@
+// 로그인 이후 가져온 사용자의 정보들을 기반으로 가입 및 정보수정 세션 저장등의 기능을 지원하는 클래스
+
 package io.mykim.bc.springBoot.config.auth;
 
 import java.util.Collections;
@@ -32,9 +34,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 		OAuth2UserService delegate = new DefaultOAuth2UserService();
 		OAuth2User oAuth2User = delegate.loadUser(userRequest);
 		
-
 		String registrationId = userRequest.getClientRegistration().getRegistrationId();
-		// 현재 로그인을 진행 중인 서비스를 구분하는 코드 : 로그인을 네이버인지, 구글인지 , 카카오인지 구분하는 코드
+		// 현재 로그인을 진행 중인 서비스를 구분하는 코드 : 로그인을 네이버인지, 구글인지 , 카카오인지 구분하는 코드, 구글은 불필요
 		
 		String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
 		// OAuth2 로그인 진행 시 키가 되는 필드(like pk)
@@ -45,11 +46,15 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 		
 		User user = saveOrUpdate(attributes);
 		
-		httpSession.setAttribute("user", new SessionUser(user)); // SessionUser 클래스 : 세션에 사용자정보를 저장하기위한 Dto 클래스, 로그인 시
+		httpSession.setAttribute("user", new SessionUser(user)); // SessionUser 클래스 : 세션에 사용자정보를 저장하기위한 Dto 클래스
 				
-		return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority(user.getRoleKey())), attributes.getAttributes(), attributes.getNameAttributeKey());
+		return new DefaultOAuth2User(
+							Collections.singleton(new SimpleGrantedAuthority(user.getRoleKey())), 
+							attributes.getAttributes(), 
+							attributes.getNameAttributeKey());
 	}
 	
+	// 사용자 정보가 업데이트 되었을때를 대비하여 구현, name, picture가 변경되면 User Entity에 반영
 	private User saveOrUpdate(OAuthAttributes attributes) {
 		User user = userRepository.findByEmail(attributes.getEmail())
 																		.map(entity -> entity.update(attributes.getName(), attributes.getPicture()))
